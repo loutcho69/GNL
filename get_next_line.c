@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:08 by lobroue           #+#    #+#             */
-/*   Updated: 2026/01/11 14:56:25 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/01/14 19:03:48 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void    read_and_stash(int fd, t_list **stash, int  *readed_ptr)
     while (!found_newline(*stash) && *readed_ptr != 0)
     {
         buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-    if (buf == NULL)
-        return;
+        if (buf == NULL)
+            return;
         *readed_ptr = (int)read(fd, buf, BUFFER_SIZE);
         if((*stash == NULL && *readed_ptr == 0) || *readed_ptr != 0)
         {
@@ -78,10 +78,10 @@ void    add_to_stash(t_list **stash, char *buf, int readed)
         *stash = new_node;
         return;
     }
-    last = ft_lst_get_lest(*stash);
+    last = lst_get_last(*stash);
     last->next = new_node;
 }
-void    extract_line(t_list stash, char **line)
+void    extract_line(t_list *stash, char **line)
 {
     
 }
