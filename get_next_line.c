@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:08 by lobroue           #+#    #+#             */
-/*   Updated: 2026/01/15 17:45:55 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/01/20 18:32:51 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char    *get_next_line(int fd)
     if (stash == NULL)
         return (NULL);
     extract_line(stash,&line);
-    // clean up stash
+    clean_stash()
 
 
     return (line);
@@ -82,6 +82,34 @@ void    add_to_stash(t_list **stash, char *buf, int readed)
     last->next = new_node;
 }
 void    extract_line(t_list *stash, char **line)
+{
+    int i;
+    int j;
+
+    if (stash == NULL)
+        return;
+    generate_line(line,stash);
+    if (*line == NULL)
+        return;
+    while (stash)
+    {
+        i = 0;
+        j = 0;
+        while (stash ->content[i])
+        {
+            if (stash->content[i] == '\n')
+            {
+                (*line)[j++] = stash->content[i]
+                break;
+            }
+            (*line)[j++] = stash->content[i++];
+        }
+        stash = stash->next;
+    }
+      (*line)[j] = '\0'; 
+}
+
+void    clean_stash(t_list **stash)
 {
     
 }

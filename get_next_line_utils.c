@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:04 by lobroue           #+#    #+#             */
-/*   Updated: 2026/01/15 17:45:53 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/01/20 18:24:59 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,29 @@ t_list    *lst_get_last(t_list *stash)
     while (current && current->next)
         current = current->next;
     return (current);
+}
+
+void    generate_line(char **line, t_list *stash)
+{
+    int i;
+    int len;
+
+    len = 0;
+    while (stash)
+    {
+        i = 0;
+        while (stash->content[i])
+        {
+            if (stash->content[i] == '\n')
+            {
+                ++len;
+                break;
+            }
+            ++len;
+            ++i;
+        }
+        stash = stash->next;
+    }
+    *line = malloc(sizeof(char) * (len + 1));
+        
 }
