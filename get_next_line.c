@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:08 by lobroue           #+#    #+#             */
-/*   Updated: 2026/01/15 17:45:55 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/01/25 01:05:11 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,14 @@ char    *get_next_line(int fd)
     if (stash == NULL)
         return (NULL);
     extract_line(stash,&line);
-    // clean up stash
-
+    clean_stash(&stash);
+    if(line[0] == '\0')
+    {
+        free_stash(stash);
+        stash = NULL;
+        free(line);
+        return(NULL);
+    }
 
     return (line);
 }
@@ -83,8 +89,63 @@ void    add_to_stash(t_list **stash, char *buf, int readed)
 }
 void    extract_line(t_list *stash, char **line)
 {
-    
+    int i;
+    int j;
+
+    if (stash == NULL)
+        return;
+    generate_line(*line, stash);
+    if (*line == NULL)
+        return;
+    while (stash)
+    {
+        i = 0;
+        while (stash->content[i])
+        {
+            if (stash->content[i] == '\n')
+            {
+                (*line)[j++] = stash ->content[i];
+                break;
+            }
+            (*line)[j++] = stash ->content[i++];
+        }
+        stash = stash->next;
+    }
+    (*line)[j] ='\0';
 }
+
+void    clean_stash(t_list **stash)
+{
+    t_list  *last;
+    t_list  *clean_node;
+    int i;
+    int j;
+    
+    clean_node = malloc(sizeof(t_list));
+    if (stash == NULL || clean_node == NULL)
+        return;
+        clean_node->next = NULL;
+        last = ft_lst_get_last(*stash);
+        i = 0;
+        while (last->content[i] && last ->content[i] != '\n')
+            i++;
+        if (last->content[i] && last->content[i] == '\n')
+            i++;
+        clean_node->content = malloc (sizeof(char) * ((ft_strlen(last->content) - i) + 1));
+        if (clean_node == NULL)
+            return;
+        j = 0;
+        while (last->content[i])
+            clean_node->content[j++] = last->content[i++];
+        clean_node->content[j] = '\0';
+        free_stash(*stash);
+        *stash = clean_node;
+        
+        
+
+}
+
+#include <fcntl.h>
 
 int     main()
 {
