@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:08 by lobroue           #+#    #+#             */
-/*   Updated: 2026/01/25 01:05:11 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/01/25 01:10:37 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,6 @@ void    clean_stash(t_list **stash)
         clean_node->content[j] = '\0';
         free_stash(*stash);
         *stash = clean_node;
-        
-        
-
 }
 
 #include <fcntl.h>
