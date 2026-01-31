@@ -6,85 +6,94 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:04 by lobroue           #+#    #+#             */
-/*   Updated: 2026/01/25 01:09:59 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/01/31 04:00:58 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int found_newline(t_list *stash)
+size_t	ft_strlen_stash(t_list *stash)
 {
-    int i;
-    t_list  *current;
-    
-    if (stash == NULL)
-        return (0);
-    current = lst_get_last(stash);
-    i = 0;
-    while (current->content[i])
-    {
-        if (current->content[i] == '\n')
-            return(1);
-        ++i;
-    }
-    return (0);
+	size_t	i;
+	size_t	count;
+
+	count = 0;
+	while (stash)
+	{
+		i = 0;
+		while (stash->content[i])
+		{
+			if (stash->content[i] == '\n')
+				return (count + 1);
+			i++;
+			count++;
+		}
+		stash = stash->next;
+	}
+	return (count);
+}
+bool	found_new_line(t_list *stash)
+{
+	int		i;
+	t_list	*tmp;
+
+	i = 0;
+	tmp = stash;
+	if (!tmp)
+		return (false);
+	while (tmp->next)
+		tmp = tmp->next;
+	while (tmp->content[i])
+	{
+		if (tmp->content[i] == '\n')
+			return (true);
+		i++;
+	}
+	return (false);
+}
+t_list	*ft_lstnew(char *buf, int y)
+{
+	t_list	*res;
+	size_t	i;
+
+	i = 0;
+	res = malloc(sizeof(t_list));
+	if (!res)
+		return (NULL);
+	while (y < BUFFER_SIZE)
+	{
+		res->content[i] = buf[y];
+		i++;
+		y++;
+	}
+	res->content[i] = '\0';
+	res->next = NULL;
+	return (res);
+}
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*tmp;
+
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }
 
-
-t_list    *lst_get_last(t_list *stash)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-    t_list  *current;
+	t_list	*tmp;
 
-    current = stash;
-    while (current && current->next)
-        current = current->next;
-    return (current);
-}
-
-void    generate_line(char **line, t_list *stash)
-{
-    int i;
-    int len;
-    
-    len = 0;
-    while (stash)
-    {
-        i = 0;
-        while (stash->content[i])
-        {
-            if (stash->content[i] == '\n')
-            {
-                len++;
-                break;
-            }
-            stash = stash->next;
-        }
-        *line = malloc (sizeof(char) * (len + 1));
-            
-    }
-}
-
-int ft_strlen(char *string)
-{
-    int i;
-
-    i = 0;
-    while (string[i])
-        i++;
-    return(i);
-}
-
-void    free_stash(t_list *stash)
-{
-    t_list *current;
-    t_list *next;
-    current = stash;
-    while(current)
-    {
-        free(current->content);
-        next = current->next;
-        free(current);
-        current = next;
-    }
-
+	while (*lst)
+	{
+		tmp = (*lst)->next;
+		del((*lst)->content);
+		free(*lst);
+		*lst = tmp;
+	}
 }
