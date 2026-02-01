@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:04 by lobroue           #+#    #+#             */
-/*   Updated: 2026/01/31 04:00:58 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/02/01 01:12:26 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ size_t	ft_strlen_stash(t_list *stash)
 			i++;
 			count++;
 		}
-		stash = stash->next;
+			stash = stash->next;
 	}
 	return (count);
 }
@@ -97,3 +97,4 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 		*lst = tmp;
 	}
 }
+
