@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:08 by lobroue           #+#    #+#             */
-/*   Updated: 2026/02/02 05:10:15 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/02/02 05:17:26 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_list	*read_and_stash(t_list *stash, int fd)
 	buf[readed] = '\0';
 	if (readed <= 0)
 	{
+		ft_lstclear(&stash);
 		free(buf);
 		return (NULL);
 	}
