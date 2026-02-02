@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:10 by lobroue           #+#    #+#             */
-/*   Updated: 2026/02/01 01:12:30 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/02/02 05:05:54 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
 # include <stdbool.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 10
 # endif
 
 typedef struct s_list
 {
-	char			content[BUFFER_SIZE +1];
+	char			content[BUFFER_SIZE + 2];
 	struct s_list	*next;
 }					t_list;
 
 char				*get_next_line(int fd);
 t_list	*ft_lstnew(char *buf, int i);
 void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstclear(t_list **lst, void (*del)(void *));
+void	ft_lstclear(t_list **lst);
 bool	found_new_line(t_list *stash);
 size_t	ft_strlen_stash(t_list *stash);
 

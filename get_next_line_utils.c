@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:04 by lobroue           #+#    #+#             */
-/*   Updated: 2026/02/01 01:12:26 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/02/02 05:10:16 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@ size_t	ft_strlen_stash(t_list *stash)
 		{
 			if (stash->content[i] == '\n')
 				return (count + 1);
-			i++;
-			count++;
+			if (stash->content[i] != '\0')
+			{
+				i++;
+				count++;
+			}
 		}
-			stash = stash->next;
+		stash = stash->next;
 	}
 	return (count);
 }
@@ -51,22 +54,22 @@ bool	found_new_line(t_list *stash)
 	}
 	return (false);
 }
-t_list	*ft_lstnew(char *buf, int y)
+t_list	*ft_lstnew(char *buf, int i)
 {
 	t_list	*res;
-	size_t	i;
+	size_t	y;
 
-	i = 0;
+	y = 0;
 	res = malloc(sizeof(t_list));
 	if (!res)
 		return (NULL);
-	while (y < BUFFER_SIZE)
+	while (buf[i])
 	{
-		res->content[i] = buf[y];
+		res->content[y] = buf[i];
 		i++;
 		y++;
 	}
-	res->content[i] = '\0';
+	res->content[y] = '\0';
 	res->next = NULL;
 	return (res);
 }
@@ -85,16 +88,14 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	tmp->next = new;
 }
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	ft_lstclear(t_list **lst)
 {
 	t_list	*tmp;
 
 	while (*lst)
 	{
 		tmp = (*lst)->next;
-		del((*lst)->content);
 		free(*lst);
 		*lst = tmp;
 	}
 }
-

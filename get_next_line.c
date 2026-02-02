@@ -6,7 +6,7 @@
 /*   By: lobroue <lobroue@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 16:30:08 by lobroue           #+#    #+#             */
-/*   Updated: 2026/02/01 01:31:43 by lobroue          ###   ########.fr       */
+/*   Updated: 2026/02/02 05:10:15 by lobroue          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_list	*clear_stash(t_list *stash)
 	if (stash->content[i] == '\n')
 		i++;
 	new_stash = ft_lstnew(stash->content, i);
-	ft_lstclear(&tmp, free);
+	ft_lstclear(&tmp);
 	return (new_stash);
 }
 
@@ -43,10 +43,10 @@ char	*extract_line(t_list *stash, char *line)
 	size_t	len;
 
 	len = ft_strlen_stash(stash);
-	line = malloc(len + 2);
+	line = malloc(len + 1);
 	if (!line)
 	{
-		ft_lstclear(&stash, free);
+		ft_lstclear(&stash);
 		return (NULL);
 	}
 	j = 0;
@@ -76,21 +76,20 @@ t_list	*read_and_stash(t_list *stash, int fd)
 	if (!buf)
 		return (NULL);
 	readed = read(fd, buf, BUFFER_SIZE);
-	while (readed >= BUFFER_SIZE)
+	buf[readed] = '\0';
+	if (readed <= 0)
+	{
+		free(buf);
+		return (NULL);
+	}
+	while (readed > 0)
 	{
 		new_node = ft_lstnew(buf, 0);
-		if (new_node == NULL)
-		{
-			free(buf);
-			ft_lstclear(&stash, free);
-			return (NULL);
-		}
 		ft_lstadd_back(&stash, new_node);
 		if (found_new_line(stash))
 			break ;
-		if (readed < BUFFER_SIZE)
-			readed = read(fd, buf, readed);
 		readed = read(fd, buf, BUFFER_SIZE);
+		buf[BUFFER_SIZE] = '\0';
 	}
 	free(buf);
 	return (stash);
@@ -107,7 +106,7 @@ char	*get_next_line(int fd)
 		stash = read_and_stash(stash, fd);
 	if (!stash)
 	{
-		free(stash);
+		ft_lstclear(&stash);
 		return (NULL);
 	}
 	line = extract_line(stash, line);
@@ -131,7 +130,7 @@ int	main(void)
 
 	i = 0;
 	fd = open("test.txt", O_RDONLY);
-	while (i < 30)
+	while (i < 40)
 	{
 		line = get_next_line(fd);
 		printf("%s", line);
